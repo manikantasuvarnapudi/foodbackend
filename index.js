@@ -82,3 +82,17 @@ app.get("/food", async (request, response) => {
     response.status(500).send("Error fetching food items");
   }
 });
+
+// API endpoint to get food item details
+app.get("/food/:id/", async (request, response) => {
+  const { id } = request.params;
+  const getFoodItemQuery = `
+    SELECT
+      *
+    FROM
+      fooditems
+    WHERE
+      id = ${id};`;
+  const FoodItem = await db.get(getFoodItemQuery);
+  response.send(FoodItem);
+});
