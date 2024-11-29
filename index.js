@@ -45,11 +45,10 @@ const initializeDBAndServer = async () => {
       );
     `);
     console.log("Table created successfully or already exists");
-
+    await db.run(`DELETE FROM fooditems;`);
     // Check for existing data and insert sample data only if the table is empty
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
-    const { count } = await db.get(checkDataQuery);
-
+    const { count } = await db.get(checkDataQuery)
     if (count === 0) {
       await insertSampleData();
     } else {
