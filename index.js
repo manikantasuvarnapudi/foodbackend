@@ -46,8 +46,17 @@ const initializeDBAndServer = async () => {
     `);
     console.log("Table created successfully or already exists");
 
-    // Insert some sample data (optional)
-    await insertSampleData();
+    // Check for existing data and insert sample data only if the table is empty
+    const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
+    const { count } = await db.get(checkDataQuery);
+
+    if (count === 0) {
+      await insertSampleData();
+    } else {
+      console.log("Sample data already exists in the database. Skipping insertion.");
+    }
+
+
 
     // Start the Express server
     app.listen(3000, () => {
