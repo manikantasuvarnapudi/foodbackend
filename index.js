@@ -1,10 +1,24 @@
 const express = require("express");
+require('dotenv').config();
 const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
+const twilio = require("twilio");
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+
 const cors = require('cors');
 const app = express();
 app.use(cors());
+
+
+
+
+const client = twilio(accountSid, authToken);
+
+
+console.log("Twilio client initialized!");
+
 
 const dbPath = path.join(__dirname, "fooditems.db");
 
@@ -96,3 +110,28 @@ app.get("/food/:id/", async (request, response) => {
   const FoodItem = await db.get(getFoodItemQuery);
   response.send(FoodItem);
 });
+
+
+// Endpoint to send an OTP
+app.post("/send-otp", async (req, res) => {
+  const { phone } = req.body;
+
+  // Generate a 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  try {
+    // Send OTP via Twilio SMS
+    const message = await client.messages.create({
+      body: `Your OTP is: ${otp}`,
+      from: "+1234567890", // My Twilio phone number
+      to: phone,
+    });
+
+    console.log(`Sent OTP ${otp} to ${phone}`);
+    res.json({ message: "OTP sent successfully", otp }); // Only show OTP for testing (remove in production)
+  } catch (error) {
+    console.error("Failed to send OTP:", error.message);
+    res.status(500).json({ error: "Failed to send OTP" });
+  }
+});
+
