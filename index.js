@@ -143,7 +143,7 @@ app.post("/send-otp", async (req, res) => {
     const message = await client.messages.create({
       body: `Your OTP is: ${otp}`,
       from: "+18669859990", // My Twilio phone number
-      to: phone,
+      to:  `+91${phone}`,
     });
 
     console.log(`Sent OTP ${otp} to ${phone}`);
