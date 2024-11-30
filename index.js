@@ -10,6 +10,8 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const cors = require('cors');
 const app = express();
 app.use(cors());
+app.use(express.json()); // Parse JSON request bodies
+
 
 
 
@@ -134,7 +136,7 @@ app.get("/food/:id/", async (request, response) => {
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
   const { phone } = req.body;
-
+  console.log(body)
   // Generate a 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
