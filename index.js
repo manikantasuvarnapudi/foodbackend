@@ -1,4 +1,5 @@
 const express = require("express");
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 const path = require("path");
 const { open } = require("sqlite");
@@ -14,13 +15,19 @@ app.use(express.json()); // Parse JSON request bodies
 
 
 
-
-
 const client = twilio(accountSid, authToken);
-
-
 console.log("Twilio client initialized!");
 
+// Configure Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+const otpStorage = {};
 
 const dbPath = path.join(__dirname, "fooditems.db");
 
@@ -135,7 +142,7 @@ app.get("/food/:id/", async (request, response) => {
 
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
-  const { phone } = req.body;
+  const { phone,email } = req.body;
   // Generate a 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -144,14 +151,37 @@ app.post("/send-otp", async (req, res) => {
     const message = await client.messages.create({
       body: `Your OTP is: ${otp}`,
       from: "+18669859990", // My Twilio phone number
-      to:  `+91${phone}`,
+      to: `+91${phone}`,
     });
 
-    console.log(`Sent OTP ${otp} to ${phone}`);
+    //console.log(`Sent OTP ${otp} to ${phone}`);
     res.json({ message: "OTP sent successfully", otp }); // Only show OTP for testing (remove in production)
   } catch (error) {
-    console.error("Failed to send OTP:", error.message);
-    res.status(500).json({ error: "Failed to send OTP" });
+    //console.error("Failed to send OTP:", error.message);
+    if (!email) {
+      return res.status(400).send({ message: 'Email is required' });
+    }
+
+    otpStorage[email] = otp;
+
+    // Email content
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Your OTP Code',
+      text: `Your OTP code is: ${otp}. This code is valid for 5 minutes.`,
+    };
+
+    // Send the OTP email
+    try {
+      await transporter.sendMail(mailOptions);
+      res.status(200).send({ message: 'OTP sent successfully!' });
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      res.status(500).send({ message: 'Failed to send OTP' });
+    }
+
+   // res.status(500).json({ error: "Failed to send OTP" });
   }
 });
 
