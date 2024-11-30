@@ -142,7 +142,7 @@ app.get("/food/:id/", async (request, response) => {
 
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
-  const { phone,email } = req.body;
+  const { phone, email } = req.body;
   // Generate a 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -150,38 +150,50 @@ app.post("/send-otp", async (req, res) => {
     // Send OTP via Twilio SMS
     const message = await client.messages.create({
       body: `Your OTP is: ${otp}`,
-      from: "+18669859990", // My Twilio phone number
+      from: "+18669859990",
       to: `+91${phone}`,
     });
-
-    //console.log(`Sent OTP ${otp} to ${phone}`);
-    res.json({ message: "OTP sent successfully", otp }); // Only show OTP for testing (remove in production)
+    otpStorage[phone] = otp;
+    res.json({ message: "OTP sent successfully", otp });
   } catch (error) {
-    //console.error("Failed to send OTP:", error.message);
-    if (!email) {
-      return res.status(400).send({ message: 'Email is required' });
-    }
+          if (!email) {
+            return res.status(400).send({ message: 'Email is required' });
+          }
+          otpStorage[email] = otp;
+          // Email content
+          const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Your OTP Code',
+            text: `Your OTP code is: ${otp}. This code is valid for 5 minutes.`,
+          };
 
-    otpStorage[email] = otp;
+          // Send the OTP email
+          try {
+            await transporter.sendMail(mailOptions);
+            res.status(200).send({ message: 'OTP sent successfully!' });
+          } catch (error) {
+            console.error('Error sending OTP:', error);
+            res.status(500).send({ message: 'Failed to send OTP' });
+          }
 
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Your OTP Code',
-      text: `Your OTP code is: ${otp}. This code is valid for 5 minutes.`,
-    };
-
-    // Send the OTP email
-    try {
-      await transporter.sendMail(mailOptions);
-      res.status(200).send({ message: 'OTP sent successfully!' });
-    } catch (error) {
-      console.error('Error sending OTP:', error);
-      res.status(500).send({ message: 'Failed to send OTP' });
-    }
-
-   // res.status(500).json({ error: "Failed to send OTP" });
+          // res.status(500).json({ error: "Failed to send OTP" });
   }
 });
+
+
+// API to verify OTP
+app.post('/verify-otp', (req, res) => {
+  const { phone, otp,email } = req.body;
+  if (!phone || !otp || !email ) return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
+
+  const storedOtp = otpStorage[phone];
+  const storedOtpmail = otpStorage[email]
+  if (storedOtp === otp || storedOtpmail === otp) {
+    delete otpStorage[phone]; // Clear OTP after successful verification
+    return res.json({ success: true, message: 'OTP verified successfully!' });
+  }
+  res.status(400).json({ success: false, message: 'Invalid OTP' });
+});
+
 
