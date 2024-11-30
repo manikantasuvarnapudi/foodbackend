@@ -46,7 +46,7 @@ const initializeDBAndServer = async () => {
         description TEXT
       );
     `);
-    console.log("Table created successfully or already exists");
+    console.log("Table created successfully");
     await db.run(`DELETE FROM fooditems;`);
     // Check for existing data and insert sample data only if the table is empty
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
@@ -136,7 +136,6 @@ app.get("/food/:id/", async (request, response) => {
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
   const { phone } = req.body;
-  console.log(body)
   // Generate a 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
