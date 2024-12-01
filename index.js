@@ -149,7 +149,7 @@ app.get("/food/:id/", async (request, response) => {
 
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
-  const { phone, email } = req.body;
+  const { name, phone, email } = req.body;
   // Generate a 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -159,47 +159,60 @@ app.post("/send-otp", async (req, res) => {
       body: `Your OTP is: ${otp}`,
       from: "+18669859990",
       to: `+91${phone}`,
+
     });
     otpStorage[phone] = otp;
     res.json({ message: "OTP sent successfully", otp });
   } catch (error) {
-          if (!email) {
-            return res.status(400).send({ message: 'Email is required' });
-          }
-          otpStorage[email] = otp;
-          // Email content
-          const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Your OTP Code',
-            text: `Your OTP code is: ${otp}. This code is valid for 5 minutes.`,
-          };
+    if (!email) {
+      return res.status(400).send({ message: 'Email is required' });
+    }
+    otpStorage[email] = otp;
+    // Email content
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `Verify Your Food Order with OTP ${otp}`,
+      text: `Dear ${name},\n\nYour One-Time Password (OTP) for verifying your food order is ${otp}.\n\n Use this code to confirm your order. It will expire in 10 minutes.`,
+      html: `
+      <p>Dear ${name},</p>
+      <p>Your One-Time Password (OTP) for verifying your food order is:</p>
+      <h2 style="color: #d9534f;">${otp}</h2>
+      <p>Use this code to confirm your order. It will expire in <strong>10 minutes</strong>.</p>
+      <p>Thank you for choosing Screen Bites!</p>
+      <p>Best regards,<br><strong>Screen Bites Team</strong></p>
+    `,
+    headers: {
+      'X-Priority': '1', 
+      'Priority': 'urgent',
+    }
+    };
 
-          // Send the OTP email
-          try {
-            await transporter.sendMail(mailOptions);
-            res.status(200).send({ message: 'OTP sent successfully!' });
-          } catch (error) {
-            console.error('Error sending OTP:', error);
-            res.status(500).send({ message: 'Failed to send OTP' });
-          }
+    // Send the OTP email
+    try {
+      await transporter.sendMail(mailOptions);
+      res.status(200).send({ message: 'OTP sent successfully!' });
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      res.status(500).send({ message: 'Failed to send OTP' });
+    }
 
-          // res.status(500).json({ error: "Failed to send OTP" });
+    // res.status(500).json({ error: "Failed to send OTP" });
   }
 });
 
 
 // API to verify OTP
 app.post('/verify-otp', (req, res) => {
-  const { phone, otp,email } = req.body;
-  if (!phone || !otp || !email ) return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
+  const { phone, otp, email } = req.body;
+  if (!phone || !otp || !email) return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
 
   const storedOtp = otpStorage[phone];
   const storedOtpmail = otpStorage[email]
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = generateOrderId();
-    return res.json({ success: true, message: 'OTP verified successfully!',orderId: orderId });
+    return res.json({ success: true, message: 'OTP verified successfully!', orderId: orderId });
   }
   res.status(400).json({ success: false, message: 'Invalid OTP' });
 });
