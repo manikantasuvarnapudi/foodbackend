@@ -5,6 +5,8 @@ const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const twilio = require("twilio");
+const shortid = require('shortid');
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
@@ -18,6 +20,7 @@ app.use(express.json()); // Parse JSON request bodies
 const client = twilio(accountSid, authToken);
 console.log("Twilio client initialized!");
 
+
 // Configure Nodemailer transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -26,6 +29,10 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS
   }
 });
+
+function generateOrderId() {
+  return `ORD-${shortid.generate()}`;
+}
 
 const otpStorage = {};
 
@@ -190,8 +197,9 @@ app.post('/verify-otp', (req, res) => {
   const storedOtp = otpStorage[phone];
   const storedOtpmail = otpStorage[email]
   if (storedOtp === otp || storedOtpmail === otp) {
-    delete otpStorage[phone]; // Clear OTP after successful verification
-    return res.json({ success: true, message: 'OTP verified successfully!' });
+    delete otpStorage[phone];
+    const orderId = generateOrderId();
+    return res.json({ success: true, message: 'OTP verified successfully!',orderId: orderId });
   }
   res.status(400).json({ success: false, message: 'Invalid OTP' });
 });
