@@ -31,7 +31,7 @@ const transporter = nodemailer.createTransport({
 });
 
 function generateOrderId() {
-  return `ORD-${shortid.generate()}`;
+  return shortid.generate();
 }
 
 const otpStorage = {};
@@ -62,7 +62,7 @@ const initializeDBAndServer = async () => {
     `);
     console.log("Table created successfully");
     await db.run(`DELETE FROM fooditems;`);
-    // Check for existing data and insert sample data only if the table is empty
+    await db.run("DELETE FROM sqlite_sequence WHERE name='fooditems';");
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
     const { count } = await db.get(checkDataQuery)
     if (count === 0) {
