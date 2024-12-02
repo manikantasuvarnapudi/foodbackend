@@ -105,7 +105,10 @@ const insertSampleData = async () => {
     ['Green Tea', 'HotBeverages', 80, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732907482/kv0anjwanphwirtngblg.jpg', 'A refreshing cup of green tea, perfect for a calm and healthy break.'],
     ['Salt Popcorn', 'popcorn', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733071297/zh96cjwnvhwvprcghjee.jpg', 'A classic salted popcorn snack.'],
     ['Cheese Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733071296/pn3djbnjeowe7zhnzlds.jpg', 'Delicious cheesy-flavored popcorn.'],
-    ['Sweet Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733155465/yi9ox9qdumpoxp3o7ne8.jpg', 'Sweet caramel-coated popcorn.']
+    ['Sweet Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733155465/yi9ox9qdumpoxp3o7ne8.jpg', 'Sweet caramel-coated popcorn.'],
+    ['Veg Roll', 'Rolls', 120, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158898/ypexdlzu4a1tvidcg5og.jpg', 'A healthy, fresh, and delicious vegetarian roll filled with assorted veggies.'],
+    ['Paneer Roll', 'Rolls', 130, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158902/yfjmpcfcrkdg6bwe8k1s.jpg', 'A tasty paneer roll with spicy marinated paneer and fresh vegetables.'],
+    ['Chicken Roll', 'Rolls', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158902/dwafzjeudnfqiiypuxkm.jpg', 'A flavorful chicken roll with grilled chicken and a blend of aromatic spices.']
   ];
 
   for (let i = 0; i < foodData.length; i++) {
