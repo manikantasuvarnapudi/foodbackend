@@ -89,24 +89,23 @@ const insertSampleData = async () => {
     VALUES (?, ?, ?, ?, ?);
   `;
   const foodData = [
-    ['Salt Popcorn', 'popcorn', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733071297/zh96cjwnvhwvprcghjee.jpg', 'A classic salted popcorn snack.'],
-    ['Cheese Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733071296/pn3djbnjeowe7zhnzlds.jpg', 'Delicious cheesy-flavored popcorn.'],
-    ['Sweet Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733155465/yi9ox9qdumpoxp3o7ne8.jpg', 'Sweet caramel-coated popcorn.']
     ['Coca Cola', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/gyygwuac4vcjabriup2f.jpg', 'A refreshing cold drink with a unique cola flavor'],
     ['Maza', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/rmtayg2lz8jtwxthgaxa.jpg', 'A sweet and fruity mango drink, perfect for hot days'],
     ['Orange Can', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/zpbjk5f6g2gbzfpkpiz3.jpg', 'A zesty and tangy orange soda to quench your thirst'],
     ['Classic Cheeseburger', 'burgers', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/icrugik0bhlttjhdud9v.jpg', 'A juicy beef patty with cheddar cheese, lettuce, tomato, and our special sauce.'],
     ['Spicy Chicken Burger', 'burgers', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903607/feurr3j9ryokg90tfavo.jpg', 'Crispy chicken fillet with spicy mayo, lettuce, and pickles.'],
-    ['Grilled Cheese Sandwich', 'sandwiches', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732770541/ubalqpxccrb3tsmvmdir.jpg', 'A classic grilled cheese sandwich with melted cheddar and crispy golden bread.'],
     ['Veggie Delight Sandwich', 'sandwiches', 140, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732906800/mtkp4399jblwvqpwrp6w.jpg', 'A fresh and healthy sandwich with assorted vegetables and creamy dressing.'],
     ['Chicken Club Sandwich', 'sandwiches', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732906801/nck1kqo6dvsi6os9qjoi.jpg', 'A classic club sandwich with tender chicken, lettuce, and tangy sauce.'],
+    ['Grilled Cheese Sandwich', 'sandwiches', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732770541/ubalqpxccrb3tsmvmdir.jpg', 'A classic grilled cheese sandwich with melted cheddar and crispy golden bread.'],
     ['Peri Peri', 'frenchfries', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903152/hpp8onukx9qia2wjodb9.jpg', 'Spicy and flavorful Peri Peri seasoned French fries.'],
     ['Salted', 'frenchfries', 190, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903152/wtmmnk49ppi0qjkqwgdj.jpg', 'Classic salted French fries with a crisp golden texture.'],
     ['Loaded', 'frenchfries', 220, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/cbdtzqkjpibh7h7heovu.jpg', 'Loaded French fries topped with cheese, sauces, and flavorful seasonings.'],
     ['Expresso', 'HotBeverages', 90, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732907482/xtvwykfrxga6xwrbeqee.jpg', 'A strong and rich shot of expresso coffee.'],
     ['Cappuccino', 'HotBeverages', 120, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732907482/kd39saigrfbepnrea5es.jpg', 'A creamy cappuccino with a perfect blend of coffee and frothy milk.'],
     ['Green Tea', 'HotBeverages', 80, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732907482/kv0anjwanphwirtngblg.jpg', 'A refreshing cup of green tea, perfect for a calm and healthy break.'],
-    
+    ['Salt Popcorn', 'popcorn', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733071297/zh96cjwnvhwvprcghjee.jpg', 'A classic salted popcorn snack.'],
+    ['Cheese Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733071296/pn3djbnjeowe7zhnzlds.jpg', 'Delicious cheesy-flavored popcorn.'],
+    ['Sweet Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733155465/yi9ox9qdumpoxp3o7ne8.jpg', 'Sweet caramel-coated popcorn.']
   ];
 
   for (let i = 0; i < foodData.length; i++) {
