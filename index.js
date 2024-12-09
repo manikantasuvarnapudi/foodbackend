@@ -221,18 +221,16 @@ app.post("/send-otp", async (req, res) => {
 
 
 // API to verify OTP
-app.post('/verify-otp', (req, res) => {
+app.post('/verify-otp', async (req, res) => {
   const { phone, otp, email, name, order } = req.body;
   if (!phone || !otp || !email) return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
-
   const storedOtp = otpStorage[phone];
   const storedOtpmail = otpStorage[email]
   const dateTime = (new Date()).toLocaleString();
-
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = generateOrderId();
-    db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails) VALUES (?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order], function (err) {
+   await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails) VALUES (?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order], function (err) {
       if (err) {
         console.error("Error inserting data:", err.message);
         res.status(400).json({ success: false, message: 'Data not stored' });
