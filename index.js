@@ -232,7 +232,7 @@ app.post('/verify-otp', async (req, res) => {
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = uuidv4().split('-')[0];
-   await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order,"Inprogress"], function (err) {
+   await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?,?)`, [name, orderId, email, dateTime, order,"Inprogress"], function (err) {
       if (err) {
         console.error("Error inserting data:", err.message);
         res.status(400).json({ success: false, message: 'Data not stored' });
