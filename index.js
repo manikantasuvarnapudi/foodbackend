@@ -228,7 +228,7 @@ app.post('/verify-otp', async (req, res) => {
   const storedOtp = otpStorage[phone];
   const storedOtpmail = otpStorage[email]
   const dateTime = (new Date()).toLocaleString();
-  
+  console.log(storedOtp,storedOtpmail)
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = uuidv4().split('-')[0];
@@ -245,7 +245,7 @@ app.post('/verify-otp', async (req, res) => {
     });
 
   } else {
-    res.status(400).json({ success: false, message: 'Invalid OTP' + `${storedOtp,storedOtpmail}` });
+    res.status(400).json({ success: false, message: `Invalid OTP ${storedOtp},${storedOtpmail}` });
   }
 
 });
