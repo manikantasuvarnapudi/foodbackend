@@ -70,6 +70,8 @@ const initializeDBAndServer = async () => {
           status TEXT NOT NULL
       )
     `);
+    await db.run(`DROP TABLE IF EXISTS orders`)
+    await db.run(`DROP TABLE IF EXISTS fooditems`)
     await db.run("DELETE FROM sqlite_sequence WHERE name='fooditems' AND name='orders';");
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
     const { count } = await db.get(checkDataQuery)
