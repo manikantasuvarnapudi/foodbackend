@@ -232,16 +232,18 @@ app.post('/verify-otp', async (req, res) => {
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = uuidv4().split('-')[0];
-   await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?,?)`, [name, orderId, email, dateTime, order,"Inprogress"], function (err) {
+    const status = "Inprogress"
+   await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order,status], function (err) {
       if (err) {
         console.error("Error inserting data:", err.message);
         res.status(400).json({ success: false, message: 'Data not stored' });
       } else {
-        console.log(`A row has been inserted with rowid ${this.lastID}`);
-        res.status(400).json({ success: false, message: 'Already Inserted' });
+        // console.log(`A row has been inserted with rowid ${this.lastID}`);
+        //res.status(400).json({ success: false, message: 'Already Inserted' });
+        return res.json({ success: true, message: 'OTP verified successfully!', orderId: orderId });
       }
     });
-    return res.json({ success: true, message: 'OTP verified successfully!', orderId: orderId });
+    
   }
   res.status(400).json({ success: false, message: 'Invalid OTP' });
 });
