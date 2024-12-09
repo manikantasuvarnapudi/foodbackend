@@ -161,7 +161,8 @@ app.get("/food/:id/", async (request, response) => {
 app.get("/orders", async(req,res) => {
   const allOrdersQuery = `SELECT * FROM orders`
   const orders = await db.all(allOrdersQuery);
-  res.send(orders) 
+  const updateOrders = orders.map((each) => ({...each,orderDetails: JSON.parse(each.orderDetails)}))
+  res.send(updateOrders) 
 })
 
 
