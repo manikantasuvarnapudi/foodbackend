@@ -5,7 +5,9 @@ const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const twilio = require("twilio");
-const shortid = require('shortid');
+const { v4: uuidv4 } = require('uuid');
+
+
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -29,9 +31,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-function generateOrderId() {
-  return shortid.generate();
-}
+
 
 const otpStorage = {};
 
@@ -229,7 +229,7 @@ app.post('/verify-otp', async (req, res) => {
   const dateTime = (new Date()).toLocaleString();
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
-    const orderId = generateOrderId();
+    const orderId = uuidv4().split('-')[0];
    await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails) VALUES (?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order], function (err) {
       if (err) {
         console.error("Error inserting data:", err.message);
