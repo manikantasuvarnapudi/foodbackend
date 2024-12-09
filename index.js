@@ -13,7 +13,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const cors = require('cors');
 const app = express();
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 
 
 
@@ -42,7 +42,7 @@ let db = null;
 
 const initializeDBAndServer = async () => {
   try {
-  
+
     db = await open({
       filename: dbPath,
       driver: sqlite3.Database,
@@ -59,9 +59,17 @@ const initializeDBAndServer = async () => {
         description TEXT
       );
     `);
-    console.log("Table created successfully");
-    await db.run(`DELETE FROM fooditems;`);
-    await db.run("DELETE FROM sqlite_sequence WHERE name='fooditems';");
+    await db.run(`
+      CREATE TABLE orders (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          orderId TEXT NOT NULL UNIQUE,
+          email TEXT NOT NULL,
+          datetime TEXT NOT NULL,
+          orderDetails TEXT NOT NULL
+      )
+    `);
+    await db.run("DELETE FROM sqlite_sequence WHERE name='fooditems' AND name='orders';");
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
     const { count } = await db.get(checkDataQuery)
     if (count === 0) {
@@ -72,7 +80,7 @@ const initializeDBAndServer = async () => {
 
 
 
-    
+
     app.listen(3000, () => {
       console.log("Server Running at http://localhost:3000/");
     });
@@ -114,8 +122,6 @@ const insertSampleData = async () => {
   for (let i = 0; i < foodData.length; i++) {
     await db.run(insertQuery, foodData[i]);
   }
-
-  console.log("Sample data inserted");
 };
 
 initializeDBAndServer();
@@ -150,6 +156,13 @@ app.get("/food/:id/", async (request, response) => {
   const FoodItem = await db.get(getFoodItemQuery);
   response.send(FoodItem);
 });
+
+// Endpoint to get all orders 
+app.get("/orders", async(req,res) => {
+  const allOrdersQuery = `SELECT * FROM orders`
+  const orders = await db.all(allOrdersQuery);
+  res.send(orders) 
+})
 
 
 // Endpoint to send an OTP
@@ -187,10 +200,10 @@ app.post("/send-otp", async (req, res) => {
       <p>Thank you for choosing Screen Bites!</p>
       <p>Best regards,<br><strong>Screen Bites Team</strong></p>
     `,
-    headers: {
-      'X-Priority': '1', 
-      'Priority': 'urgent',
-    }
+      headers: {
+        'X-Priority': '1',
+        'Priority': 'urgent',
+      }
     };
 
     // Send the OTP email
@@ -209,7 +222,7 @@ app.post("/send-otp", async (req, res) => {
 
 // API to verify OTP
 app.post('/verify-otp', (req, res) => {
-  const { phone, otp, email } = req.body;
+  const { phone, otp, email, name, order } = req.body;
   if (!phone || !otp || !email) return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
 
   const storedOtp = otpStorage[phone];
@@ -217,6 +230,15 @@ app.post('/verify-otp', (req, res) => {
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = generateOrderId();
+    db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails) VALUES (?, ?, ?, ?, ?)`, [name, orderId, email, datetime, order], function (err) {
+      if (err) {
+        console.error("Error inserting data:", err.message);
+        res.status(400).json({ success: false, message: 'Data not stored' });
+      } else {
+        console.log(`A row has been inserted with rowid ${this.lastID}`);
+        res.status(400).json({ success: false, message: 'Already Inserted' });
+      }
+    });
     return res.json({ success: true, message: 'OTP verified successfully!', orderId: orderId });
   }
   res.status(400).json({ success: false, message: 'Invalid OTP' });
