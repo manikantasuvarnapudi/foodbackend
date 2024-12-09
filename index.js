@@ -60,7 +60,7 @@ const initializeDBAndServer = async () => {
       );
     `);
     await db.run(`
-      CREATE TABLE orders (
+      CREATE TABLE IF NOT EXISTS orders (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT NOT NULL,
           orderId TEXT NOT NULL UNIQUE,
