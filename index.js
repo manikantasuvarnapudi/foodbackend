@@ -158,11 +158,11 @@ app.get("/food/:id/", async (request, response) => {
 });
 
 // Endpoint to get all orders 
-app.get("/orders", async(req,res) => {
+app.get("/orders", async (req, res) => {
   const allOrdersQuery = `SELECT * FROM orders`
   const orders = await db.all(allOrdersQuery);
-  const updateOrders = orders.map((each) => ({...each,orderDetails: JSON.parse(each.orderDetails)}))
-  res.send(updateOrders) 
+  const updateOrders = orders.map((each) => ({ ...each, orderDetails: JSON.parse(each.orderDetails) }))
+  res.send(updateOrders)
 })
 
 
@@ -228,11 +228,12 @@ app.post('/verify-otp', async (req, res) => {
   const storedOtp = otpStorage[phone];
   const storedOtpmail = otpStorage[email]
   const dateTime = (new Date()).toLocaleString();
+
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     const orderId = uuidv4().split('-')[0];
     const status = "Inprogress"
-   await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order,status], function (err) {
+    await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order, status], function (err) {
       if (err) {
         console.error("Error inserting data:", err.message);
         res.status(400).json({ success: false, message: 'Data not stored' });
@@ -242,9 +243,11 @@ app.post('/verify-otp', async (req, res) => {
         return res.json({ success: true, message: 'OTP verified successfully!', orderId: orderId });
       }
     });
-    
+
+  } else {
+    res.status(400).json({ success: false, message: 'Invalid OTP' });
   }
-  res.status(400).json({ success: false, message: 'Invalid OTP' });
+
 });
 
 
