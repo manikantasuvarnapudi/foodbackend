@@ -48,6 +48,9 @@ const initializeDBAndServer = async () => {
       driver: sqlite3.Database,
     });
 
+    await db.run(`DROP TABLE IF EXISTS orders;`);
+    await db.run(`DROP TABLE IF EXISTS fooditems;`);
+    await db.run("DELETE FROM sqlite_sequence WHERE name='fooditems' AND name='orders';");
 
     await db.run(`
       CREATE TABLE IF NOT EXISTS fooditems (
@@ -70,9 +73,6 @@ const initializeDBAndServer = async () => {
           status TEXT NOT NULL
       )
     `);
-    await db.run(`DROP TABLE IF EXISTS orders`)
-    await db.run(`DROP TABLE IF EXISTS fooditems`)
-    await db.run("DELETE FROM sqlite_sequence WHERE name='fooditems' AND name='orders';");
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
     const { count } = await db.get(checkDataQuery)
     if (count === 0) {
@@ -80,9 +80,6 @@ const initializeDBAndServer = async () => {
     } else {
       console.log("Sample data already exists in the database. Skipping insertion.");
     }
-
-
-
 
     app.listen(3000, () => {
       console.log("Server Running at http://localhost:3000/");
