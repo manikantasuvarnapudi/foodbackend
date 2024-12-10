@@ -224,30 +224,50 @@ app.post("/send-otp", async (req, res) => {
 // API to verify OTP
 app.post('/verify-otp', async (req, res) => {
   const { phone, otp, email, name, order } = req.body;
-  if (!phone || !otp || !email) return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
-  const storedOtp = otpStorage[phone];
-  const storedOtpmail = otpStorage[email]
-  const dateTime = (new Date()).toLocaleString();
-  console.log(storedOtp,storedOtpmail)
-  if (storedOtp === otp || storedOtpmail === otp) {
-    delete otpStorage[phone];
-    const orderId = uuidv4().split('-')[0];
-    const status = "Inprogress"
-    await db.run(`INSERT INTO orders (name, orderId, email, datetime, orderDetails,status) VALUES (?, ?, ?, ?, ?, ?)`, [name, orderId, email, dateTime, order, status], function (err) {
-      if (err) {
-        console.error("Error inserting data:", err.message);
-        res.status(400).json({ success: false, message: 'Data not stored' });
-      } else {
-        // console.log(`A row has been inserted with rowid ${this.lastID}`);
-        //res.status(400).json({ success: false, message: 'Already Inserted' });
-        return res.json({ success: true, message: 'OTP verified successfully!', orderId: orderId });
-      }
-    });
 
-  } else {
-    res.status(400).json({ success: false, message: `Invalid OTP ${storedOtp},${storedOtpmail}` });
+  if (!phone || !otp || !email) {
+    return res.status(400).json({ success: false, message: 'Phone and OTP are required' });
   }
 
+  const storedOtp = otpStorage[phone];
+  const storedOtpmail = otpStorage[email];
+
+  console.log(`Stored OTP (phone): ${storedOtp}, Stored OTP (email): ${storedOtpmail}`);
+
+  if (storedOtp === otp || storedOtpmail === otp) {
+    delete otpStorage[phone];
+
+    const orderId = uuidv4().split('-')[0];
+    const status = "Inprogress";
+    const dateTime = new Date().toLocaleString();
+
+    try {
+      await db.run(
+        `INSERT INTO orders (name, orderId, email, datetime, orderDetails, status) VALUES (?, ?, ?, ?, ?, ?)`,
+        [name, orderId, email, dateTime, order, status]
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: 'OTP verified successfully!',
+        orderId: orderId,
+      });
+
+    } catch (err) {
+      console.error("Error inserting data into orders table:", err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Error storing data in database',
+      });
+    }
+
+  } else {
+    // OTP mismatch
+    return res.status(400).json({
+      success: false,
+      message: `Invalid OTP: ${storedOtp}, ${storedOtpmail}`,
+    });
+  }
 });
 
 
