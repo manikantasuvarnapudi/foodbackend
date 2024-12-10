@@ -162,7 +162,7 @@ app.get("/orders", async (req, res) => {
   const {
     search = "",
     filter = ""
-  } = request.query;
+  } = req.query;
 
   const allOrdersQuery = `SELECT * FROM orders WHERE name LIKE '%${search}%' AND status LIKE '%${filter}%'`
   const orders = await db.all(allOrdersQuery);
