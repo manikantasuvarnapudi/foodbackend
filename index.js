@@ -239,7 +239,18 @@ app.post('/verify-otp', async (req, res) => {
     delete otpStorage[email];
     const orderId = uuidv4().split('-')[0];
     const status = "Inprogress";
-    const dateTime = new Date().toLocaleString();
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    
+    const dateTime = new Date().toLocaleString('en-IN', options);
+    
 
     try {
       await db.run(
