@@ -159,7 +159,12 @@ app.get("/food/:id/", async (request, response) => {
 
 // Endpoint to get all orders 
 app.get("/orders", async (req, res) => {
-  const allOrdersQuery = `SELECT * FROM orders`
+  const {
+    search = "",
+    filter = ""
+  } = request.query;
+
+  const allOrdersQuery = `SELECT * FROM orders WHERE name LIKE '%${search}%' AND status LIKE '%${filter}%'`
   const orders = await db.all(allOrdersQuery);
   const updateOrders = orders.map((each) => ({ ...each, orderDetails: JSON.parse(each.orderDetails) }))
   res.send(updateOrders)
