@@ -236,7 +236,7 @@ app.post('/verify-otp', async (req, res) => {
 
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
-
+    delete otpStorage[email];
     const orderId = uuidv4().split('-')[0];
     const status = "Inprogress";
     const dateTime = new Date().toLocaleString();
@@ -262,10 +262,9 @@ app.post('/verify-otp', async (req, res) => {
     }
 
   } else {
-    // OTP mismatch
     return res.status(400).json({
       success: false,
-      message: `Invalid OTP: ${storedOtp}, ${storedOtpmail}`,
+      message: `Invalid OTP`,
     });
   }
 });
