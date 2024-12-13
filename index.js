@@ -287,7 +287,7 @@ app.post('/verify-otp', async (req, res) => {
 
 
 // Update order status endpoint
-app.post('/orders/update-order', (req, res) => {
+app.post('/orders/update-order',  async (req, res) => {
   const { orderId, action } = req.body;
   // Validate input
   if (!orderId || !action) {
@@ -298,7 +298,7 @@ app.post('/orders/update-order', (req, res) => {
   }
   // Update query
   const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
-  db.run(updateQuery, [action, orderId], function (err) {
+   await db.run(updateQuery, [action, orderId], function (err) {
       if (err) {
           console.error('Error updating order:', err.message);
           return res.status(500).json({
