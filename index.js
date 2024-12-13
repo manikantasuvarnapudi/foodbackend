@@ -297,7 +297,7 @@ app.post('/orders/update-order', (req, res) => {
       });
   }
   // Update query
-  const updateQuery = `UPDATE food SET status = ? WHERE orderId = ?`;
+  const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
   db.run(updateQuery, [action, orderId], function (err) {
       if (err) {
           console.error('Error updating order:', err.message);
