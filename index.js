@@ -286,3 +286,41 @@ app.post('/verify-otp', async (req, res) => {
 });
 
 
+// Update order status endpoint
+app.post('/update-order', (req, res) => {
+  const { orderId, action } = req.body;
+  // Validate input
+  if (!orderId || !action) {
+      return res.status(400).json({
+          success: false,
+          message: 'Order ID and action are required.',
+      });
+  }
+  // Update query
+  const updateQuery = `UPDATE food SET status = ? WHERE orderId = ?`;
+  db.run(updateQuery, [action, orderId], function (err) {
+      if (err) {
+          console.error('Error updating order:', err.message);
+          return res.status(500).json({
+              success: false,
+              message: 'Failed to update order status.',
+          });
+      }
+
+      // Check if any row was updated
+      if (this.changes === 0) {
+          return res.status(404).json({
+              success: false,
+              message: 'Order not found.',
+          });
+      }
+
+      res.status(200).json({
+          success: true,
+          message: `Order ${orderId} status updated to '${action}'.`,
+      });
+  });
+});
+
+
+
