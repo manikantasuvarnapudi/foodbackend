@@ -286,8 +286,7 @@ app.post('/verify-otp', async (req, res) => {
 });
 
 
-// Update order status endpoint
-app.post('/update-order', async (req, res) => {
+app.put('/update-order', async (req, res) => {
   const { orderId, action } = req.body;
 
   if (!orderId || !action) {
@@ -308,12 +307,14 @@ app.post('/update-order', async (req, res) => {
               }
           });
       });
+      
       if (result === 0) {
           return res.status(404).json({
               success: false,
               message: 'Order not found.',
           });
       }
+
       return res.status(200).json({
           success: true,
           message: `Order ${orderId} status updated to '${action}'.`,
