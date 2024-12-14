@@ -287,7 +287,7 @@ app.post('/verify-otp', async (req, res) => {
 
 
 // Update order status endpoint
-app.post('/orders/update-order', async (req, res) => {
+app.post('/update-order', async (req, res) => {
   const { orderId, action } = req.body;
 
   if (!orderId || !action) {
