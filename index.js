@@ -286,9 +286,12 @@ app.post('/verify-otp', async (req, res) => {
 });
 
 
-app.put('/update-order', async (req, res) => {
+
+// update order status
+app.put('/update-status', (req, res) => {
   const { orderId, action } = req.body;
 
+  // Validate input
   if (!orderId || !action) {
       return res.status(400).json({
           success: false,
@@ -296,34 +299,20 @@ app.put('/update-order', async (req, res) => {
       });
   }
 
-  try {
-      const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
-      const result = await new Promise((resolve, reject) => {
-          db.run(updateQuery, [action, orderId], function (err) {
-              if (err) {
-                  reject(err);
-              } else {
-                  resolve(this.changes);
-              }
-          });
-      });
-      
-      if (result === 0) {
-          return res.status(404).json({
+  const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
+
+  db.run(updateQuery, [action, orderId], function (err) {
+      if (err) {
+          console.error('Error updating order:', err.message);
+          return res.status(500).json({
               success: false,
-              message: 'Order not found.',
+              message: 'Failed to update order status.',
           });
       }
-
       return res.status(200).json({
           success: true,
           message: `Order ${orderId} status updated to '${action}'.`,
       });
-  } catch (err) {
-      console.error('Error updating order:', err.message);
-      return res.status(500).json({
-          success: false,
-          message: 'Failed to update order status.',
-      });
-  }
+  });
 });
+
