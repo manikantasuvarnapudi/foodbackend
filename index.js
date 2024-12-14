@@ -287,40 +287,42 @@ app.post('/verify-otp', async (req, res) => {
 
 
 // Update order status endpoint
-app.post('/orders/update-order',  async (req, res) => {
+app.post('/orders/update-order', async (req, res) => {
   const { orderId, action } = req.body;
-  // Validate input
+
   if (!orderId || !action) {
       return res.status(400).json({
           success: false,
           message: 'Order ID and action are required.',
       });
   }
-  // Update query
-  const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
-   await db.run(updateQuery, [action, orderId], function (err) {
-      if (err) {
-          console.error('Error updating order:', err.message);
-          return res.status(500).json({
-              success: false,
-              message: 'Failed to update order status.',
-          });
-      }
 
-      // Check if any row was updated
-      if (this.changes === 0) {
+  try {
+      const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
+      const result = await new Promise((resolve, reject) => {
+          db.run(updateQuery, [action, orderId], function (err) {
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve(this.changes);
+              }
+          });
+      });
+      if (result === 0) {
           return res.status(404).json({
               success: false,
               message: 'Order not found.',
           });
       }
-
-      res.status(200).json({
+      return res.status(200).json({
           success: true,
           message: `Order ${orderId} status updated to '${action}'.`,
       });
-  });
+  } catch (err) {
+      console.error('Error updating order:', err.message);
+      return res.status(500).json({
+          success: false,
+          message: 'Failed to update order status.',
+      });
+  }
 });
-
-
-
