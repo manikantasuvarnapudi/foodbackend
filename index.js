@@ -288,7 +288,7 @@ app.post('/verify-otp', async (req, res) => {
 
 
 // update order status
-app.put('/update-status', (req, res) => {
+app.put('/update-status', async (req, res) => {
   const { orderId, action } = req.body;
   console.log('Request received:', req.body);
 
@@ -302,7 +302,7 @@ app.put('/update-status', (req, res) => {
   console.log('Validating input...');
   const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
 
-  db.run(updateQuery, [action, orderId], function (err) {
+  await db.run(updateQuery, [action, orderId], function (err) {
     console.log('Executing update query...');
       if (err) {
 
