@@ -35,6 +35,19 @@ const transporter = nodemailer.createTransport({
 
 const otpStorage = {};
 
+const options = {
+  timeZone: 'Asia/Kolkata',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+};
+
+const dateTime = new Date().toLocaleString('en-IN', options);
+
+
 const dbPath = path.join(__dirname, "fooditems.db");
 
 let db = null;
@@ -70,7 +83,8 @@ const initializeDBAndServer = async () => {
           email TEXT NOT NULL,
           datetime TEXT NOT NULL,
           orderDetails TEXT NOT NULL,
-          status TEXT NOT NULL
+          status TEXT NOT NULL,
+          completedtime TEXT NOT NULL
       )
     `);
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
@@ -244,23 +258,12 @@ app.post('/verify-otp', async (req, res) => {
     delete otpStorage[email];
     const orderId = uuidv4().split('-')[0];
     const status = "Inprogress";
-    const options = {
-      timeZone: 'Asia/Kolkata',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    };
-    
-    const dateTime = new Date().toLocaleString('en-IN', options);
     
 
     try {
       await db.run(
-        `INSERT INTO orders (name, orderId, email, datetime, orderDetails, status) VALUES (?, ?, ?, ?, ?, ?)`,
-        [name, orderId, email, dateTime, order, status]
+        `INSERT INTO orders (name, orderId, email, datetime, orderDetails, status, completedtime) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [name, orderId, email, dateTime, order, status, dateTime]
       );
 
       return res.status(200).json({
@@ -292,18 +295,14 @@ app.put('/update-status', async (req, res) => {
   const { orderId, action } = req.body;
   console.log('Request received:', req.body);
 
-  // Validate input
   if (!orderId || !action) {
       return res.status(400).json({
           success: false,
           message: 'Order ID and action are required.',
       });
   }
-  console.log('Validating input...');
-  const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
-  
-  await db.run(updateQuery, [action, orderId], function (err) {
-    console.log('Executing update query...');
+  const updateQuery = `UPDATE orders SET status = ?, completedtime = ? WHERE orderId = ?`;
+  await db.run(updateQuery, [action, orderId,dateTime], function (err) {
       if (err) {
 
           console.error('Error updating order:', err.message);
@@ -313,7 +312,6 @@ app.put('/update-status', async (req, res) => {
           });
       } 
   });
-  console.log('Update completed.');
   return res.status(200).json({
     success: true,
     message: `Order ${orderId} status updated to '${action}'.`,
