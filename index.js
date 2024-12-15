@@ -290,6 +290,7 @@ app.post('/verify-otp', async (req, res) => {
 // update order status
 app.put('/update-status', (req, res) => {
   const { orderId, action } = req.body;
+  console.log('Request received:', req.body);
 
   // Validate input
   if (!orderId || !action) {
@@ -298,21 +299,25 @@ app.put('/update-status', (req, res) => {
           message: 'Order ID and action are required.',
       });
   }
-
+  console.log('Validating input...');
   const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
 
   db.run(updateQuery, [action, orderId], function (err) {
+    console.log('Executing update query...');
       if (err) {
+
           console.error('Error updating order:', err.message);
           return res.status(500).json({
               success: false,
               message: 'Failed to update order status.',
           });
       }
+      
       return res.status(200).json({
           success: true,
           message: `Order ${orderId} status updated to '${action}'.`,
       });
   });
+  console.log('Update completed.');
 });
 
