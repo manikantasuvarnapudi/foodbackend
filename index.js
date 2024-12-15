@@ -301,7 +301,7 @@ app.put('/update-status', async (req, res) => {
   }
   console.log('Validating input...');
   const updateQuery = `UPDATE orders SET status = ? WHERE orderId = ?`;
-
+  
   await db.run(updateQuery, [action, orderId], function (err) {
     console.log('Executing update query...');
       if (err) {
@@ -311,13 +311,12 @@ app.put('/update-status', async (req, res) => {
               success: false,
               message: 'Failed to update order status.',
           });
-      }
-      
-      return res.status(200).json({
-          success: true,
-          message: `Order ${orderId} status updated to '${action}'.`,
-      });
+      } 
   });
   console.log('Update completed.');
+  return res.status(200).json({
+    success: true,
+    message: `Order ${orderId} status updated to '${action}'.`,
 });
+ });
 
