@@ -33,20 +33,6 @@ const transporter = nodemailer.createTransport({
 
 
 
-const otpStorage = {};
-
-const options = {
-  timeZone: 'Asia/Kolkata',
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-};
-
-const dateTime = new Date().toLocaleString('en-IN', options);
-
 
 const dbPath = path.join(__dirname, "fooditems.db");
 
@@ -252,13 +238,26 @@ app.post('/verify-otp', async (req, res) => {
   const storedOtpmail = otpStorage[email];
 
   console.log(`Stored OTP (phone): ${storedOtp}, Stored OTP (email): ${storedOtpmail}`);
+  const otpStorage = {};
+
+  const options = {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+
+  const dateTime = new Date().toLocaleString('en-IN', options);
 
   if (storedOtp === otp || storedOtpmail === otp) {
     delete otpStorage[phone];
     delete otpStorage[email];
     const orderId = uuidv4().split('-')[0];
     const status = "Inprogress";
-    
+
 
     try {
       await db.run(
@@ -296,25 +295,38 @@ app.put('/update-status', async (req, res) => {
   console.log('Request received:', req.body);
 
   if (!orderId || !action) {
-      return res.status(400).json({
-          success: false,
-          message: 'Order ID and action are required.',
-      });
+    return res.status(400).json({
+      success: false,
+      message: 'Order ID and action are required.',
+    });
   }
-  const updateQuery = `UPDATE orders SET status = ?, completedtime = ? WHERE orderId = ?`;
-  await db.run(updateQuery, [action, orderId,dateTime], function (err) {
-      if (err) {
+  const otpStorage = {};
 
-          console.error('Error updating order:', err.message);
-          return res.status(500).json({
-              success: false,
-              message: 'Failed to update order status.',
-          });
-      } 
+  const options = {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+
+  const dateTime = new Date().toLocaleString('en-IN', options);
+  const updateQuery = `UPDATE orders SET status = ?, completedtime = ? WHERE orderId = ?`;
+  await db.run(updateQuery, [action, dateTime, orderId], function (err) {
+    if (err) {
+
+      console.error('Error updating order:', err.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to update order status.',
+      });
+    }
   });
   return res.status(200).json({
     success: true,
     message: `Order ${orderId} status updated to '${action}'.`,
+  });
 });
- });
 
