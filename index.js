@@ -32,7 +32,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
+const otpStorage = {};
 
 const dbPath = path.join(__dirname, "fooditems.db");
 
@@ -238,7 +238,7 @@ app.post('/verify-otp', async (req, res) => {
   const storedOtpmail = otpStorage[email];
 
   console.log(`Stored OTP (phone): ${storedOtp}, Stored OTP (email): ${storedOtpmail}`);
-  const otpStorage = {};
+  
 
   const options = {
     timeZone: 'Asia/Kolkata',
@@ -300,7 +300,7 @@ app.put('/update-status', async (req, res) => {
       message: 'Order ID and action are required.',
     });
   }
-  const otpStorage = {};
+  
 
   const options = {
     timeZone: 'Asia/Kolkata',
