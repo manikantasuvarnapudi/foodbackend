@@ -102,11 +102,11 @@ const insertSampleData = async () => {
     ['Orange Can', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/zpbjk5f6g2gbzfpkpiz3.jpg', 'A zesty and tangy orange soda to quench your thirst'],
     ['Classic Cheeseburger', 'burgers', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/icrugik0bhlttjhdud9v.jpg', 'A juicy beef patty with cheddar cheese, lettuce, tomato, and our special sauce.'],
     ['Spicy Chicken Burger', 'burgers', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903607/feurr3j9ryokg90tfavo.jpg', 'Crispy chicken fillet with spicy mayo, lettuce, and pickles.'],
-    ['Veggie Delight Sandwich', 'sandwiches', 140, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732906800/mtkp4399jblwvqpwrp6w.jpg', 'A fresh and healthy sandwich with assorted vegetables and creamy dressing.'],
+    ['Veggie Delight Sandwich', 'sandwiches', 140, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403107/rfwemqvcx1b6xvuim2mj.jpg', 'A fresh and healthy sandwich with assorted vegetables and creamy dressing.'],
     ['Chicken Club Sandwich', 'sandwiches', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732906801/nck1kqo6dvsi6os9qjoi.jpg', 'A classic club sandwich with tender chicken, lettuce, and tangy sauce.'],
     ['Grilled Cheese Sandwich', 'sandwiches', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732770541/ubalqpxccrb3tsmvmdir.jpg', 'A classic grilled cheese sandwich with melted cheddar and crispy golden bread.'],
-    ['Peri Peri', 'frenchfries', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903152/hpp8onukx9qia2wjodb9.jpg', 'Spicy and flavorful Peri Peri seasoned French fries.'],
-    ['Salted', 'frenchfries', 190, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903152/wtmmnk49ppi0qjkqwgdj.jpg', 'Classic salted French fries with a crisp golden texture.'],
+    ['Peri Peri', 'frenchfries', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403107/npcl4h11kbl9xlvfrodg.jpg', 'Spicy and flavorful Peri Peri seasoned French fries.'],
+    ['Salted', 'frenchfries', 190, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403103/dvk0oushrg7ehv7hzmzz.jpg', 'Classic salted French fries with a crisp golden texture.'],
     ['Loaded', 'frenchfries', 220, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/cbdtzqkjpibh7h7heovu.jpg', 'Loaded French fries topped with cheese, sauces, and flavorful seasonings.'],
     ['Expresso', 'HotBeverages', 90, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732907482/xtvwykfrxga6xwrbeqee.jpg', 'A strong and rich shot of expresso coffee.'],
     ['Cappuccino', 'HotBeverages', 120, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732907482/kd39saigrfbepnrea5es.jpg', 'A creamy cappuccino with a perfect blend of coffee and frothy milk.'],
@@ -116,7 +116,10 @@ const insertSampleData = async () => {
     ['Sweet Popcorn', 'popcorn', 230, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733155465/yi9ox9qdumpoxp3o7ne8.jpg', 'Sweet caramel-coated popcorn.'],
     ['Veg Roll', 'Rolls', 120, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158898/ypexdlzu4a1tvidcg5og.jpg', 'A healthy, fresh, and delicious vegetarian roll filled with assorted veggies.'],
     ['Paneer Roll', 'Rolls', 130, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158902/yfjmpcfcrkdg6bwe8k1s.jpg', 'A tasty paneer roll with spicy marinated paneer and fresh vegetables.'],
-    ['Chicken Roll', 'Rolls', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158902/dwafzjeudnfqiiypuxkm.jpg', 'A flavorful chicken roll with grilled chicken and a blend of aromatic spices.']
+    ['Chicken Roll', 'Rolls', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1733158902/dwafzjeudnfqiiypuxkm.jpg', 'A flavorful chicken roll with grilled chicken and a blend of aromatic spices.'],
+    ['Margherita Pizza', 'Pizza', 250, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734360185/mdfzi9ofjd85ae1ssed7.jpg', 'Classic pizza topped with fresh tomato sauce and melted mozzarella cheese'],
+    ['Veggie Delight Pizza', 'Pizza', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734360185/nwlmstdqjpjkdofd4hi7.jpg', 'Loaded with fresh vegetables like bell peppers, onions, and olives'],
+    ['Paneer Pizza', 'Pizza', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734360182/l5rtzbermu5fwrk2gjcd.jpg', 'Delicious pizza topped with paneer cubes, onions, and spicy sauce'],
   ];
 
   for (let i = 0; i < foodData.length; i++) {
