@@ -135,7 +135,7 @@ const insertSampleData = async () => {
 initializeDBAndServer();
 
 // API endpoint to get all food items
-app.get("/food", async (request, response) => {
+app.get("/", async (request, response) => {
   try {
     const getfoodQuery = `
       SELECT
