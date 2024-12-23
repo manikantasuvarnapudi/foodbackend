@@ -100,7 +100,7 @@ const insertSampleData = async () => {
     ['Coca Cola', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/gyygwuac4vcjabriup2f.jpg', 'A refreshing cold drink with a unique cola flavor'],
     ['Maza', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/rmtayg2lz8jtwxthgaxa.jpg', 'A sweet and fruity mango drink, perfect for hot days'],
     ['Orange Can', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/zpbjk5f6g2gbzfpkpiz3.jpg', 'A zesty and tangy orange soda to quench your thirst'],
-    ['Classic Veggie Burger', 'burgers', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734960132/br1onounqrbkuu2ymtsq.jpg', 'A delicious plant-based patty with fresh lettuce, tomato, and a tangy sauce.']
+    ['Classic Veggie Burger', 'burgers', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734960132/br1onounqrbkuu2ymtsq.jpg', 'A delicious plant-based patty with fresh lettuce, tomato, and a tangy sauce.'],
     ['Classic Cheeseburger', 'burgers', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/icrugik0bhlttjhdud9v.jpg', 'A juicy beef patty with cheddar cheese, lettuce, tomato, and our special sauce.'],
     ['Spicy Chicken Burger', 'burgers', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903607/feurr3j9ryokg90tfavo.jpg', 'Crispy chicken fillet with spicy mayo, lettuce, and pickles.'],
     ['Veggie Delight Sandwich', 'sandwiches', 140, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403107/rfwemqvcx1b6xvuim2mj.jpg', 'A fresh and healthy sandwich with assorted vegetables and creamy dressing.'],
