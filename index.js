@@ -104,7 +104,7 @@ const insertSampleData = async () => {
     ['Classic Cheeseburger', 'burgers', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/icrugik0bhlttjhdud9v.jpg', 'A juicy beef patty with cheddar cheese, lettuce, tomato, and our special sauce.'],
     ['Spicy Chicken Burger', 'burgers', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903607/feurr3j9ryokg90tfavo.jpg', 'Crispy chicken fillet with spicy mayo, lettuce, and pickles.'],
     ['Veggie Delight Sandwich', 'sandwiches', 140, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403107/rfwemqvcx1b6xvuim2mj.jpg', 'A fresh and healthy sandwich with assorted vegetables and creamy dressing.'],
-    ['Chicken Club Sandwich', 'sandwiches', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732906801/nck1kqo6dvsi6os9qjoi.jpg', 'A classic club sandwich with tender chicken, lettuce, and tangy sauce.'],
+    ['Chicken Club Sandwich', 'sandwiches', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734963178/yzodb8vhs4whvj4rp5uc.jpg', 'A classic club sandwich with tender chicken, lettuce, and tangy sauce.'],
     ['Grilled Cheese Sandwich', 'sandwiches', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732770541/ubalqpxccrb3tsmvmdir.jpg', 'A classic grilled cheese sandwich with melted cheddar and crispy golden bread.'],
     ['Peri Peri', 'frenchfries', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403107/npcl4h11kbl9xlvfrodg.jpg', 'Spicy and flavorful Peri Peri seasoned French fries.'],
     ['Salted', 'frenchfries', 190, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403103/dvk0oushrg7ehv7hzmzz.jpg', 'Classic salted French fries with a crisp golden texture.'],
