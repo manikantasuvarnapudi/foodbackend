@@ -100,6 +100,7 @@ const insertSampleData = async () => {
     ['Coca Cola', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/gyygwuac4vcjabriup2f.jpg', 'A refreshing cold drink with a unique cola flavor'],
     ['Maza', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/rmtayg2lz8jtwxthgaxa.jpg', 'A sweet and fruity mango drink, perfect for hot days'],
     ['Orange Can', 'ColdBeverages', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732792152/zpbjk5f6g2gbzfpkpiz3.jpg', 'A zesty and tangy orange soda to quench your thirst'],
+    ['Classic Veggie Burger', 'burgers', 150, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734960132/br1onounqrbkuu2ymtsq.jpg', 'A delicious plant-based patty with fresh lettuce, tomato, and a tangy sauce.']
     ['Classic Cheeseburger', 'burgers', 160, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903151/icrugik0bhlttjhdud9v.jpg', 'A juicy beef patty with cheddar cheese, lettuce, tomato, and our special sauce.'],
     ['Spicy Chicken Burger', 'burgers', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1732903607/feurr3j9ryokg90tfavo.jpg', 'Crispy chicken fillet with spicy mayo, lettuce, and pickles.'],
     ['Veggie Delight Sandwich', 'sandwiches', 140, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734403107/rfwemqvcx1b6xvuim2mj.jpg', 'A fresh and healthy sandwich with assorted vegetables and creamy dressing.'],
@@ -120,6 +121,10 @@ const insertSampleData = async () => {
     ['Margherita Pizza', 'Pizza', 250, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734360185/mdfzi9ofjd85ae1ssed7.jpg', 'Classic pizza topped with fresh tomato sauce and melted mozzarella cheese'],
     ['Veggie Delight Pizza', 'Pizza', 180, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734360185/nwlmstdqjpjkdofd4hi7.jpg', 'Loaded with fresh vegetables like bell peppers, onions, and olives'],
     ['Paneer Pizza', 'Pizza', 210, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734360182/l5rtzbermu5fwrk2gjcd.jpg', 'Delicious pizza topped with paneer cubes, onions, and spicy sauce'],
+    ['Chocolate Bliss', 'Desserts', 110, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734959502/zo6nyg0f8x2bkmhkcax2.jpg', 'A rich and creamy chocolate ice cream, perfect for chocolate lovers'],
+    ['Strawberry Delight', 'Desserts', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734959502/pfvttos7ew8znbivnzaq.jpg', 'A refreshing strawberry ice cream made with real fruit for a sweet and tangy taste'],
+    ['Vanilla Dream', 'Desserts', 90, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734959502/qfzasgk1upzapvdg17zz.jpg', 'A classic and smooth vanilla ice cream with a rich, creamy texture']
+  
   ];
 
   for (let i = 0; i < foodData.length; i++) {
