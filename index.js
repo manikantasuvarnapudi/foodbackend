@@ -14,9 +14,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const cors = require('cors');
 const app = express();
-app.use(cors({
-  origin: 'https://screenbites.vercel.app', 
-}));
+app.use(cors());
 app.use(express.json());
 
 
