@@ -8,6 +8,7 @@ const twilio = require("twilio");
 const { v4: uuidv4 } = require('uuid');
 const jsonMiddleware = express.json();
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
