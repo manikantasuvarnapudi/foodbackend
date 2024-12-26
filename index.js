@@ -220,27 +220,38 @@ app.get("/orders", async (req, res) => {
 // Endpoint for user registration
 app.post("/users/", async (request, response) => {
   const { username, name, password, gender, location } = request.body;
-  const hashedPassword = await bcrypt.hash(request.body.password, 10);
-  const selectUserQuery = `SELECT * FROM users WHERE username = '${username}'`;
-  const dbUser = await db.get(selectUserQuery);
-  if (dbUser === undefined) {
-    const createUserQuery = `
-      INSERT INTO 
-        users (username, name, password, gender, location) 
-      VALUES 
-        (
-          '${username}', 
-          '${name}',
-          '${hashedPassword}', 
-          '${gender}',
-          '${location}'
-        )`;
-    const dbResponse = await db.run(createUserQuery);
-    const newUserId = dbResponse.lastID;
-    response.send(`Created new user with ${newUserId}`);
-  } else {
-    response.status = 400;
-    response.send("User already exists");
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    // Check if user already exists
+    const selectUserQuery = `SELECT * FROM users WHERE username = ?`;
+    const dbUser = await db.get(selectUserQuery, [username]);
+
+    if (dbUser === undefined) {
+      // Insert new user
+      const createUserQuery = `
+        INSERT INTO users (username, name, password, gender, location) 
+        VALUES (?, ?, ?, ?, ?)
+      `;
+      const dbResponse = await db.run(createUserQuery, [
+        username,
+        name,
+        hashedPassword,
+        gender,
+        location,
+      ]);
+      const newUserId = dbResponse.lastID;
+      response.send(`Created new user with ID ${newUserId}`);
+    } else {
+      response.status(400).send("User already exists");
+    }
+  } catch (error) {
+    if (error.code === "SQLITE_CONSTRAINT") {
+      response.status(400).send("User already exists");
+    } else {
+      console.error("Error:", error);
+      response.status(500).send("Internal Server Error");
+    }
   }
 });
 
