@@ -221,6 +221,29 @@ app.post("/users/", async (request, response) => {
 });
 
 
+app.post("/login", async (request, response) => {
+  const { username, password } = request.body;
+  const selectUserQuery = `SELECT * FROM users WHERE username = '${username}'`;
+  const dbUser = await db.get(selectUserQuery);
+  if (dbUser === undefined) {
+    response.status(400);
+    response.send("Invalid User");
+  } else {
+    const isPasswordMatched = await bcrypt.compare(password, dbUser.password);
+    if (isPasswordMatched === true) {
+      const payload = {
+        username: username,
+      };
+      const jwtToken = jwt.sign(payload, `${process.env.SECRET_KEY}`);
+      response.send({ jwtToken });
+    } else {
+      response.status(400);
+      response.send("Invalid Password");
+    }
+  }
+});
+
+
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
   const { name, phone, email } = req.body;
