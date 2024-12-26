@@ -202,7 +202,7 @@ app.post("/users/", async (request, response) => {
   if (dbUser === undefined) {
     const createUserQuery = `
       INSERT INTO 
-        user (username, name, password, gender, location) 
+        users (username, name, password, gender, location) 
       VALUES 
         (
           '${username}', 
