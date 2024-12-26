@@ -150,6 +150,29 @@ const insertSampleData = async () => {
 
 initializeDBAndServer();
 
+
+const authenticateToken = (request, response, next) => {
+  let jwtToken;
+  const authHeader = request.headers["authorization"];
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(" ")[1];
+  }
+  if (jwtToken === undefined) {
+    response.status(401);
+    response.send("Invalid JWT Token");
+  } else {
+    jwt.verify(jwtToken,`${process.env.SECRET_KEY}` , async (error, payload) => {
+      if (error) {
+        response.status(401);
+        response.send("Invalid JWT Token");
+      } else {
+        request.username = payload.username;
+        next();
+      }
+    });
+  }
+};
+
 // API endpoint to get all food items
 app.get("/", async (request, response) => {
   try {
@@ -364,7 +387,7 @@ app.post('/verify-otp', async (req, res) => {
 
 
 // update order status
-app.put('/update-status', async (req, res) => {
+app.put('/update-status',authenticateToken, async (req, res) => {
   const { orderId, action } = req.body;
   console.log('Request received:', req.body);
 
