@@ -282,11 +282,9 @@ app.post("/login", async (request, response) => {
 // Endpoint to send an OTP
 app.post("/send-otp", async (req, res) => {
   const { name, phone, email } = req.body;
-  // Generate a 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
-    // Send OTP via Twilio SMS
     const message = await client.messages.create({
       body: `
 ${otp} is your OTP for ScreenBites. Please do not share it with anyone.
