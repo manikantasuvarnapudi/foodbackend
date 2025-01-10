@@ -76,7 +76,7 @@ const initializeDBAndServer = async () => {
           completedtime TEXT NOT NULL
       )
     `);
-   
+
     await db.run(`
       CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,7 +87,7 @@ const initializeDBAndServer = async () => {
           location TEXT NOT NULL
       )
     `);
-    
+
 
     const checkDataQuery = `SELECT COUNT(*) AS count FROM fooditems;`;
     const { count } = await db.get(checkDataQuery)
@@ -140,7 +140,7 @@ const insertSampleData = async () => {
     ['Chocolate Bliss', 'Desserts', 110, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734959502/zo6nyg0f8x2bkmhkcax2.jpg', 'A rich and creamy chocolate ice cream, perfect for chocolate lovers'],
     ['Strawberry Delight', 'Desserts', 100, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734959502/pfvttos7ew8znbivnzaq.jpg', 'A refreshing strawberry ice cream made with real fruit for a sweet and tangy taste'],
     ['Vanilla Dream', 'Desserts', 90, 'https://res.cloudinary.com/djszohdjt/image/upload/v1734959502/qfzasgk1upzapvdg17zz.jpg', 'A classic and smooth vanilla ice cream with a rich, creamy texture']
-  
+
   ];
 
   for (let i = 0; i < foodData.length; i++) {
@@ -161,7 +161,7 @@ const authenticateToken = (request, response, next) => {
     response.status(401);
     response.send("Invalid JWT Token");
   } else {
-    jwt.verify(jwtToken,`${process.env.SECRET_KEY}` , async (error, payload) => {
+    jwt.verify(jwtToken, `${process.env.SECRET_KEY}`, async (error, payload) => {
       if (error) {
         response.status(401);
         response.send("Invalid JWT Token");
@@ -288,7 +288,11 @@ app.post("/send-otp", async (req, res) => {
   try {
     // Send OTP via Twilio SMS
     const message = await client.messages.create({
-      body: `Your OTP is: ${otp}`,
+      body: `
+${otp} is your OTP for ScreenBites. Please do not share it with anyone.
+
+@screenbites.vercel.app #${otp}
+`,
       from: "+18669859990",
       to: `+91${phone}`,
 
@@ -346,7 +350,7 @@ app.post('/verify-otp', async (req, res) => {
   const storedOtpmail = otpStorage[email];
 
   console.log(`Stored OTP (phone): ${storedOtp}, Stored OTP (email): ${storedOtpmail}`);
-  
+
 
   const options = {
     timeZone: 'Asia/Kolkata',
@@ -398,7 +402,7 @@ app.post('/verify-otp', async (req, res) => {
 
 
 // update order status
-app.put('/update-status',authenticateToken, async (req, res) => {
+app.put('/update-status', authenticateToken, async (req, res) => {
   const { orderId, action } = req.body;
   console.log('Request received:', req.body);
 
@@ -408,7 +412,7 @@ app.put('/update-status',authenticateToken, async (req, res) => {
       message: 'Order ID and action are required.',
     });
   }
-  
+
 
   const options = {
     timeZone: 'Asia/Kolkata',
