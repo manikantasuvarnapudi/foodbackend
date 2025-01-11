@@ -291,7 +291,7 @@ ${otp} is your OTP for ScreenBites. Please do not share it with anyone.
 
 @screenbites.vercel.app #${otp}
 `,
-      from: "+19000046661",
+      from: "+18669859990",
       to: `+91${phone}`,
 
     });
